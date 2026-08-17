@@ -1,6 +1,5 @@
-# Divinely Strange
+# Vacay Travels
 
-Dark-theme ecommerce scaffold for handcrafted jewellery with a public storefront and admin dashboard.
 
 ## Stack
 
@@ -36,13 +35,9 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=divinely_strange
+DB_NAME=vacay_db
 ```
 
 ## Core Features
 
-- Cinematic landing page with animated hero canvas
-- Category-first catalog with tabs for earrings, necklaces, and rings
-- Cart and invoice generation without user login
-- Admin inventory table and sales analytics dashboard
-- MySQL-ready backend with mock fallback data for first-run development
+

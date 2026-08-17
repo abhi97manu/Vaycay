@@ -17,18 +17,18 @@ const LoginPage = () => {
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [showAlert, setShowAlert] = React.useState<boolean>(false);
 
   async function HandleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const status = await LoginService(username, password);
-    setAlert({ message: status.message, type: 'error' });
+    setShowAlert(true)
     console.log(status);
   }
 
   return (
     <>
-    {alert && <Alert message={alert.message} type={alert.type} />}
+    {showAlert && <Alert type = {'error'} message = {'USER NOT FOUND '} timeout = {2000} setShowAlert= {setShowAlert} showAlert = {showAlert}/>}
 <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white px-4">
   {/* Clean white background for the surrounding area */}
 
