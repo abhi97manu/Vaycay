@@ -14,5 +14,7 @@ export const env = {
 };
 
 export const hasDatabaseConfig = Boolean(
-  env.dbHost && env.dbUser && env.dbPassword && env.dbName
+  env.dbHost && env.dbUser && env.dbName  
 );
+
+//add && env.dbPassword when in prod

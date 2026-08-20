@@ -2,11 +2,18 @@ import React, { useEffect } from 'react'
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import {LoginService} from '../Services/ApiServices';
+import {useNavigate} from 'react-router-dom'
 import Alert from '../components/layout/Alert';
 
 interface UserCredentials {
   username: string;
   password: string;
+}
+
+interface Alert {
+  type : "error" | "warning" | "passed",
+  message : string,
+  timeout : number
 }
 
 
@@ -17,19 +24,32 @@ const LoginPage = () => {
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const [showAlert, setShowAlert] = React.useState<boolean>(false);
+  const [alert, setAlert]  = React.useState<Alert>({
+    type : 'error',
+    message : '' ,
+    timeout : 0
+  });
 
+
+  const navigate = useNavigate()
   async function HandleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const status = await LoginService(username, password);
-    setShowAlert(true)
-    console.log(status);
+    setAlert({type : status.status === 200 ? 'passed' : 'error' , message : status?.data?.message, timeout: 2000})
+    
+    if(status.status == 200)
+    {
+      navigate('/admin')
+    }
   }
+
+ 
 
   return (
     <>
-    {showAlert && <Alert type = {'error'} message = {'USER NOT FOUND '} timeout = {2000} setShowAlert= {setShowAlert} showAlert = {showAlert}/>}
-<section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white px-4">
+     <Alert alert = {alert}/>
+
+<section className="absolute min-h-screen flex items-center justify-center overflow-hidden bg-white px-4">
   {/* Clean white background for the surrounding area */}
 
   {/* Refined Glass Card: Less glossy, orange & white mix */}
@@ -113,7 +133,7 @@ const LoginPage = () => {
         <button
           type="submit"
           className="w-full rounded-xl bg-orange-600 text-white font-semibold py-4 hover:bg-orange-700 transition duration-300 shadow-md"
-          onClick = {(e)=> HandleSubmit(e)}
+          onClick = {((e)=>HandleSubmit(e))}
         >
           Login
         </button>
