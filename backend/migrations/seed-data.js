@@ -25,18 +25,18 @@ async function seedData() {
 
     await connection.query(`INSERT IGNORE INTO countries (name) VALUES ('India')`)
 
-    await connection.query(`INSERT IGNORE INTO states (name, country,country_id)
+    await connection.query(`INSERT IGNORE INTO states (name,country_id)
 VALUES
-    ('Goa', 'India',1),
-    ('Rajasthan', 'India',1),
-    ('Kerala', 'India',1),
-    ('Himachal Pradesh', 'India',1),
-    ('Uttarakhand', 'India',1),
-    ('Tamil Nadu', 'India',1),
-    ('Maharashtra', 'India',1),
-    ('West Bengal', 'India',1),
-    ('Sikkim', 'India',1),
-    ('Karnataka', 'India',1);`);
+    ('Goa',1),
+    ('Rajasthan',1),
+    ('Kerala',1),
+    ('Himachal Pradesh',1),
+    ('Uttarakhand',1),
+    ('Tamil Nadu',1),
+    ('Maharashtra',1),
+    ('West Bengal',1),
+    ('Sikkim',1),
+    ('Karnataka',1);`);
 
 
 

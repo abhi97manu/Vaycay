@@ -15,8 +15,8 @@ export async function getUsername(username: string): Promise<User | null> {
            const [result] = await pool.query<User[]>(
     "SELECT username, password FROM users WHERE username = ?",
     [username]
-  );
-  console.log("Database query result:", result);
+  );  
+
     if(result.length === 0){
 
       return null ;
