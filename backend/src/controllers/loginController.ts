@@ -1,6 +1,7 @@
 import  bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { getUsername } from "../services/loginServices.js";
+import jwt from "jsonwebtoken";
 
 interface User {
     username: string;
@@ -12,7 +13,7 @@ export async function loginController(_request: Request, _response: Response) : 
       try{
 
        const {username , password }   = _request.body;   
-       console.log("Received login request for username:", username);   
+        
          const user  = await getUsername(username)
 
          if(!user){
@@ -25,7 +26,9 @@ export async function loginController(_request: Request, _response: Response) : 
                 return;
         }
 
-         _response.status(200).json({message: "Login successful"});
+        const token = jwt.sign({ username: user.username, role: "admin" }, process.env.JWT_SECRET || "default_secret", { expiresIn: "1h" });
+      
+        _response.status(200).json({message: "Login successful", token});
 
 }
 catch(error){

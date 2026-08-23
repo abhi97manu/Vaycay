@@ -23,6 +23,6 @@ app.get("/api/health", (_request, response) => {
 
 app.use("/api/v1/public", publicRoutes);
 app.use("/api/v1/auth/login", loginRoutes);
-app.use("/api/v1/admin",authHandler, adminRoutes);
+app.use("/api/v1/auth/admin", adminRoutes);
 app.get("/api/v1/ai_req",  AIassist)
 app.use(errorHandler);

@@ -21,7 +21,8 @@ async function runMigration(){
          multipleStatements: true
     });
     const migrationfiles = [
-    '001_initial_schema.sql'
+    '001_initial_schema.sql',
+    '002_packages.sql'
 ]
 
 

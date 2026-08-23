@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { adminDashboard, adminPackages } from "../controllers/packageController.js";
+import { adminDashboard, addPackages } from "../controllers/AdminController.js";
+import { authHandler } from "../middleware/authHandler.js";
 
 export const adminRoutes = Router();
 
-adminRoutes.get("/dashboard", adminDashboard);
-adminRoutes.get("/packages", adminPackages);
+adminRoutes.get("/dashboard", authHandler, adminDashboard);
+adminRoutes.post("/packages", authHandler, addPackages);
+//adminRoutes.get("/dashboard", adminDashboard);
+
