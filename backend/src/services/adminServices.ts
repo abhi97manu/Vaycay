@@ -14,7 +14,18 @@ export const addDest = async (destination: any) : Promise<boolean>=>{
             }
             return true;
         } catch (error) {
-            console.error("Error adding destination:", error);
+           
             throw error;
         }
+}
+
+export const addTrip = async (trip :any) : Promise<void> =>{
+    const {name,destination_id, start_date, end_date, photo, price } = trip;
+
+    try{
+        
+        const [result] = await pool.query(
+            `INSERT INTO trips (name, destination_id, start_date, end_date, price)`
+        )
+    }
 }
