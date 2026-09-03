@@ -6,6 +6,6 @@ export const adminRoutes = Router();
 
 adminRoutes.get("/dashboard", authHandler, adminDashboard);
 adminRoutes.post("/destinations", authHandler, addDestination);
-adminRoutes.post("/packages", authHandler, addTrip);
+adminRoutes.post("/trip", authHandler, addTrip);
 //adminRoutes.get("/dashboard", adminDashboard);
 

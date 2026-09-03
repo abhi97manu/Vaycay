@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four Weeks to Launch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+:root{
+  --paper:#F4F6F3;
+  --surface:#FFFFFF;
+  --surface-2:#EDF1EE;
+  --ink:#14201C;
+  --ink-soft:#5B6862;
+  --line:#DBE2DC;
+  --accent:#1B6E5A;
+  --accent-soft:#E2EFE9;
+  --flag:#9A6410;
+  --flag-soft:#F6EAD4;
+  --shadow:0 1px 2px rgba(20,32,28,.05), 0 8px 24px rgba(20,32,28,.05);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1513;
+    --surface:#161E1B;
+    --surface-2:#1C2622;
+    --ink:#E6EDE8;
+    --ink-soft:#93A29B;
+    --line:#26312D;
+    --accent:#55B99C;
+    --accent-soft:#17332B;
+    --flag:#D9A24B;
+    --flag-soft:#2E2411;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.28);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1513;
+  --surface:#161E1B;
+  --surface-2:#1C2622;
+  --ink:#E6EDE8;
+  --ink-soft:#93A29B;
+  --line:#26312D;
+  --accent:#55B99C;
+  --accent-soft:#17332B;
+  --flag:#D9A24B;
+  --flag-soft:#2E2411;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.28);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 22px 96px}
+
+/* ---------- sticky progress rail ---------- */
+.rail{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.rail-inner{
+  max-width:940px;margin:0 auto;padding:11px 22px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.rail-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);white-space:nowrap;
+}
+.rail-bar{
+  flex:1;min-width:140px;height:6px;border-radius:99px;background:var(--line);overflow:hidden;
+}
+.rail-fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s ease}
+.rail-count{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.rail-reset{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  background:none;border:1px solid var(--line);color:var(--ink-soft);
+  padding:4px 9px;border-radius:6px;cursor:pointer;
+}
+.rail-reset:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- masthead ---------- */
+header.mast{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 18px;
+}
+h1{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(2.6rem,7vw,4.1rem);line-height:1.02;letter-spacing:-.03em;
+  margin:0 0 20px;text-wrap:balance;
+}
+.standfirst{font-size:1.16rem;color:var(--ink-soft);max-width:62ch;margin:0}
+.mast-meta{
+  display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+}
+.mast-meta b{display:block;font-weight:500;color:var(--ink);font-size:13px;margin-top:2px}
+
+/* ---------- sections ---------- */
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+h2{
+  font-family:var(--display);font-weight:700;font-size:1.72rem;letter-spacing:-.02em;
+  margin:0 0 8px;text-wrap:balance;
+}
+.sub{color:var(--ink-soft);margin:0 0 28px;max-width:64ch}
+h3{font-family:var(--display);font-weight:600;font-size:1.06rem;letter-spacing:-.01em;margin:0 0 10px}
+p{margin:0 0 16px}
+p:last-child{margin-bottom:0}
+
+/* ---------- cards ---------- */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:20px 22px;box-shadow:var(--shadow);
+}
+.card ul{margin:0;padding-left:19px}
+.card li{margin-bottom:6px;font-size:.95rem}
+.card li:last-child{margin-bottom:0}
+.tagline{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 12px;
+}
+
+/* trip fields */
+.field-group{
+  border-top:1px solid var(--line);padding:16px 0;
+  display:grid;grid-template-columns:190px 1fr;gap:8px 28px;align-items:start;
+}
+.field-group:first-of-type{border-top:none;padding-top:0}
+.field-group h3{margin:0;padding-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  background:var(--surface-2);border:1px solid var(--line);
+  padding:3px 9px;border-radius:5px;white-space:nowrap;
+}
+@media (max-width:640px){.field-group{grid-template-columns:1fr;gap:10px}}
+
+/* ---------- attention panel ---------- */
+#attention{
+  background:var(--flag-soft);border:1px solid var(--flag);border-radius:12px;
+  padding:18px 22px;margin:28px 0 0;
+}
+#attention h3{color:var(--flag);margin-bottom:8px}
+#attention ol{margin:0;padding-left:20px}
+#attention li{font-size:.95rem;margin-bottom:5px}
+#attention[hidden]{display:none!important}
+
+/* ---------- weeks ---------- */
+.week{margin-top:34px}
+.week-head{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding-bottom:12px;border-bottom:2px solid var(--ink);
+}
+.week-no{
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent);
+  border:1px solid var(--accent);border-radius:5px;padding:2px 8px;
+}
+.week-title{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.02em;margin:0}
+.week-days{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-left:auto}
+.week-goal{color:var(--ink-soft);font-size:.98rem;margin:14px 0 4px;max-width:64ch}
+.week-prog{display:flex;align-items:center;gap:10px;margin:14px 0 6px}
+.week-prog .bar{flex:1;height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.week-prog .fill{height:100%;width:0;background:var(--accent);transition:width .3s ease}
+.week-prog .num{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+
+ul.tasks{list-style:none;margin:6px 0 0;padding:0}
+li.task{
+  display:grid;grid-template-columns:auto 1fr auto auto;align-items:start;gap:12px;
+  padding:11px 12px;border-radius:9px;border:1px solid transparent;
+}
+li.task:hover{background:var(--surface)}
+li.task + li.task{border-top:1px solid var(--line);border-radius:0}
+li.task input[type=checkbox]{
+  appearance:none;width:18px;height:18px;margin:3px 0 0;flex:none;
+  border:1.5px solid var(--ink-soft);border-radius:5px;background:var(--surface);cursor:pointer;
+  display:grid;place-content:center;transition:all .15s ease;
+}
+li.task input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)}
+li.task input[type=checkbox]:checked::after{
+  content:"";width:9px;height:5px;border-left:2px solid var(--surface);border-bottom:2px solid var(--surface);
+  transform:rotate(-45deg) translate(1px,-1px);
+}
+li.task input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.task-text{font-size:.98rem;line-height:1.45}
+li.task.done .task-text{color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:1px}
+.tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--line);
+  padding:2px 7px;border-radius:5px;white-space:nowrap;margin-top:3px;
+}
+.flagbtn{
+  font-family:var(--mono);font-size:13px;line-height:1;
+  background:none;border:1px solid var(--line);color:var(--ink-soft);
+  width:26px;height:26px;border-radius:6px;cursor:pointer;margin-top:1px;flex:none;
+  transition:all .15s ease;
+}
+.flagbtn:hover{border-color:var(--flag);color:var(--flag)}
+.flagbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+li.task.flagged{background:var(--flag-soft);border-color:var(--flag)}
+li.task.flagged .flagbtn{background:var(--flag);border-color:var(--flag);color:var(--surface)}
+li.task.flagged + li.task{border-top-color:transparent}
+.checkpoint{
+  margin-top:14px;padding:13px 16px;background:var(--accent-soft);
+  border-radius:9px;font-size:.95rem;
+}
+.checkpoint b{font-family:var(--display);font-weight:600;font-size:.83rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:3px;color:var(--accent)}
+
+/* ---------- misc ---------- */
+.note{font-size:.95rem;color:var(--ink-soft)}
+.rule-list{margin:0;padding-left:20px}
+.rule-list li{margin-bottom:8px}
+footer{padding:40px 0 0;border-top:1px solid var(--line);margin-top:52px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.04em}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="rail-inner">
+    <span class="rail-label">Build progress</span>
+    <div class="rail-bar"><div class="rail-fill" id="railFill"></div></div>
+    <span class="rail-count" id="railCount">0 / 0</span>
+    <button class="rail-reset" id="resetBtn" type="button">Reset</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Group travel booking platform · Solo build</p>
+  <h1>Four Weeks to Launch</h1>
+  <p class="standfirst">A plain-language plan for building a group-trip booking website — the part travellers see, and the admin panel where you control every word, photo, date, seat and price behind it. Tick things off as you go; flag what needs attention.</p>
+  <div class="mast-meta">
+    <span>Team size<b>One developer</b></span>
+    <span>Timeline<b>4 weeks · 20 working days</b></span>
+    <span>Goal<b>A real booking taken online</b></span>
+  </div>
+</header>
+
+<section>
+  <h2>What you are building</h2>
+  <p class="sub">Two halves of one product. Nothing on the public site is hard-coded — every trip, date, price and photo comes from the admin panel.</p>
+  <div class="grid g2">
+    <div class="card">
+      <p class="tagline">Half one · The travel site</p>
+      <p>A traveller lands on the site, browses trips by destination, month or budget, opens a trip page, reads the day-by-day plan, picks a departure date, pays an advance and gets a confirmed seat with a booking ID.</p>
+    </div>
+    <div class="card">
+      <p class="tagline">Half two · The control room</p>
+      <p>You log in, add a new trip with all its details, open a departure for 20 seats, watch bookings and money come in, chase pending payments, and download a report — all without opening the code or the database.</p>
+    </div>
+  </div>
+  <p class="note" style="margin-top:22px">The business model this copies is the fixed group departure: a trip runs on set dates, strangers join it, a trip captain leads it, and the price covers stay, transport, some meals and activities. That single idea shapes almost every screen and every database table below.</p>
+</section>
+
+<section>
+  <h2>What a visitor can do</h2>
+  <p class="sub">Only the last item genuinely needs to work on day one. The rest is what makes it feel like a real travel company rather than a form.</p>
+  <div class="grid g3">
+    <div class="card">
+      <p class="tagline">Find</p>
+      <ul>
+        <li>Home page with search and featured trips</li>
+        <li>Browse by destination, month, number of days, budget</li>
+        <li>Categories: domestic, international, weekend, backpacking, honeymoon, corporate</li>
+        <li>Destination pages that group all trips to one place</li>
+        <li>Sort by price, duration, popularity</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tagline">Decide</p>
+      <ul>
+        <li>Photo gallery and short pitch</li>
+        <li>Day-by-day plan with stays and meals</li>
+        <li>What is included and what is not</li>
+        <li>Available departure dates with seats left</li>
+        <li>Price per person by room sharing</li>
+        <li>Reviews, past-batch photos, FAQs</li>
+        <li>Cancellation and payment rules</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tagline">Book</p>
+      <ul>
+        <li>Pick a departure and number of travellers</li>
+        <li>Fill traveller details and ID</li>
+        <li>Apply a coupon, see GST and total</li>
+        <li>Pay the advance online</li>
+        <li>Get a booking ID and confirmation</li>
+        <li>Pay the balance later from a link</li>
+        <li>See past and upcoming bookings in an account</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <p class="tagline">Also worth having</p>
+    <p class="note" style="margin:0">A "request a custom trip" enquiry form, a WhatsApp button, a blog for travel guides, a newsletter signup, and a wishlist. All of these are lead machines — the enquiry form especially, because a lot of travel money is closed on a phone call, not on a card.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What the admin can do</h2>
+  <p class="sub">Four jobs: put things in, watch what happens, fix what goes wrong, pull the numbers out.</p>
+  <div class="grid g2">
+    <div class="card">
+      <p class="tagline">Create, edit, delete</p>
+      <ul>
+        <li><b>Trips</b> — the whole record, every field listed below</li>
+        <li><b>Departures</b> — dates, seat count, price for that batch</li>
+        <li><b>Itinerary days</b> — reorder, duplicate, edit inline</li>
+        <li><b>Destinations and categories</b></li>
+        <li><b>Coupons and offers</b> — flat or percentage, expiry, usage cap</li>
+        <li><b>Trip captains</b> and which departure they lead</li>
+        <li><b>Hotels, vendors and transport</b> used per trip</li>
+        <li><b>Bookings and travellers</b> — edit, cancel, refund</li>
+        <li><b>Reviews and testimonials</b> — approve before publishing</li>
+        <li><b>Blogs, banners, FAQs, policy pages</b></li>
+        <li><b>Enquiries and leads</b> — assign, add notes, mark status</li>
+        <li><b>Staff accounts</b> with limited permissions</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tagline">Watch and report</p>
+      <ul>
+        <li>Bookings today, this week, this month</li>
+        <li>Money collected vs money still pending</li>
+        <li>Seats filled per departure — which batch is dying</li>
+        <li>Best-selling trips and destinations</li>
+        <li>How many enquiries turned into bookings</li>
+        <li>Where visitors came from and which pages they read</li>
+        <li>Cancellations and refunds</li>
+        <li>Average booking value and group size</li>
+        <li>Departure manifest — who is travelling, with ID and phone</li>
+        <li>Excel download of bookings, travellers and payments</li>
+        <li>A payment-due list to chase before departure</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Everything one trip holds</h2>
+  <p class="sub">This is the list that decides your database. Get it right in week one and the rest of the month is mostly screens. Every one of these is editable from the admin panel.</p>
+
+  <div class="field-group">
+    <h3>Identity</h3>
+    <div class="chips">
+      <span class="chip">Trip name</span><span class="chip">Web address / slug</span><span class="chip">Short pitch</span><span class="chip">Full description</span><span class="chip">Cover photo</span><span class="chip">Photo gallery</span><span class="chip">Video link</span><span class="chip">Destination</span><span class="chip">Country / state</span><span class="chip">Trip type</span><span class="chip">Difficulty</span><span class="chip">Best season</span><span class="chip">Age range</span><span class="chip">Tags</span><span class="chip">Featured on home</span><span class="chip">Live or draft</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Route and days</h3>
+    <div class="chips">
+      <span class="chip">Nights and days</span><span class="chip">Starting point</span><span class="chip">Ending point</span><span class="chip">Day number</span><span class="chip">Day title</span><span class="chip">Day description</span><span class="chip">Where you sleep that night</span><span class="chip">Meals included that day</span><span class="chip">Distance and travel time</span><span class="chip">Altitude</span><span class="chip">Activities</span><span class="chip">Day photo</span><span class="chip">Map pins</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Departures and seats</h3>
+    <div class="chips">
+      <span class="chip">Start date</span><span class="chip">End date</span><span class="chip">Total seats</span><span class="chip">Seats booked</span><span class="chip">Seats left</span><span class="chip">Status: open / filling fast / full / closed</span><span class="chip">Trip captain</span><span class="chip">Pickup point and time</span><span class="chip">Drop point and time</span><span class="chip">Price for this batch</span><span class="chip">Male / female seat split</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Money</h3>
+    <div class="chips">
+      <span class="chip">Base price per person</span><span class="chip">Triple sharing price</span><span class="chip">Double sharing price</span><span class="chip">Single room extra</span><span class="chip">Strike-through price</span><span class="chip">Advance to book</span><span class="chip">GST percentage</span><span class="chip">Flight add-on</span><span class="chip">Optional activity add-ons</span><span class="chip">Coupon codes allowed</span><span class="chip">EMI available</span><span class="chip">Balance due date</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>In and out</h3>
+    <div class="chips">
+      <span class="chip">Inclusions list</span><span class="chip">Exclusions list</span><span class="chip">Things to carry</span><span class="chip">Packing list</span><span class="chip">Stay type per night</span><span class="chip">Transport type</span><span class="chip">Meal plan</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Rules</h3>
+    <div class="chips">
+      <span class="chip">Payment schedule</span><span class="chip">Cancellation policy</span><span class="chip">Refund slabs by date</span><span class="chip">ID documents needed</span><span class="chip">Visa notes</span><span class="chip">Insurance notes</span><span class="chip">Medical declaration</span><span class="chip">Terms accepted at checkout</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Trust</h3>
+    <div class="chips">
+      <span class="chip">Star rating</span><span class="chip">Written reviews</span><span class="chip">Reviewer photo and batch</span><span class="chip">Past-batch photos</span><span class="chip">FAQs</span><span class="chip">Number of people who travelled</span>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <h3>Found on Google</h3>
+    <div class="chips">
+      <span class="chip">Page title</span><span class="chip">Page description</span><span class="chip">Keywords</span><span class="chip">Social share image</span><span class="chip">Sitemap entry</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How the pieces connect</h2>
+  <p class="sub">Nine tables carry the whole product. Read it as sentences, not a diagram.</p>
+  <div class="card">
+    <ul class="rule-list">
+      <li>A <b>destination</b> has many <b>trips</b>.</li>
+      <li>A <b>trip</b> has many <b>itinerary days</b>, and each day belongs to exactly one trip.</li>
+      <li>A <b>trip</b> has many <b>departures</b> — same trip, different dates, different seats and price.</li>
+      <li>A <b>departure</b> has many <b>bookings</b>. Seats left is total seats minus confirmed seats.</li>
+      <li>A <b>booking</b> has many <b>travellers</b> — one person books, four people go.</li>
+      <li>A <b>booking</b> has many <b>payments</b> — the advance, then the balance, then possibly a refund.</li>
+      <li>A <b>coupon</b> is used by many bookings, and its usage counter goes up each time.</li>
+      <li>An <b>enquiry</b> may or may not turn into a booking. Track both so you can see your conversion.</li>
+      <li>A <b>user</b> is either a traveller with an account, or an admin, or staff with limited access.</li>
+    </ul>
+  </div>
+  <p class="note" style="margin-top:18px"><b>One rule that saves you later:</b> never store "seats left" as a number you edit by hand. Calculate it from confirmed bookings every time. The day you edit it by hand is the day you oversell a bus.</p>
+</section>
+
+<section>
+  <h2>The four-week plan</h2>
+  <p class="sub">Five working days a week. Each week ends with something you can actually show. Tick a task when it works, not when you have written the code. Hit the flag on anything that stalled you — flagged items collect at the top of this section.</p>
+
+  <div id="attention" hidden>
+    <h3>Needs attention</h3>
+    <ol id="attentionList"></ol>
+  </div>
+
+  <div id="weeks"></div>
+</section>
+
+<section>
+  <h2>Deliberately left out</h2>
+  <p class="sub">Everything below is real work that a travel platform eventually needs. None of it belongs in month one, and pulling any of it forward is the usual reason a solo build never launches.</p>
+  <div class="grid g2">
+    <div class="card">
+      <p class="tagline">Skip for now</p>
+      <ul>
+        <li>Live flight and hotel inventory from suppliers</li>
+        <li>A mobile app</li>
+        <li>Travel agent or reseller logins</li>
+        <li>Multiple currencies and languages</li>
+        <li>An in-app chat with the trip captain</li>
+        <li>Automatic invoicing and accounting sync</li>
+        <li>Loyalty points and referral rewards</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tagline">Do the cheap version instead</p>
+      <ul>
+        <li>Flights: one add-on price field, booked manually</li>
+        <li>Chat: a WhatsApp button</li>
+        <li>Invoices: a PDF the admin downloads</li>
+        <li>Reviews: you paste them in, no review system</li>
+        <li>Notifications: email only, WhatsApp later</li>
+        <li>Search: plain database search, no search engine</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Working rules for a solo month</h2>
+  <div class="grid g2">
+    <div class="card">
+      <p class="tagline">Pace</p>
+      <ul class="rule-list">
+        <li>Build the admin side of a feature before the public side. You cannot test a trip page with no trips.</li>
+        <li>Put real content in from day one — three real trips, real photos, real prices. Fake data hides real problems.</li>
+        <li>Push to a live web address in week one, even if it is ugly. A thing that is live gets finished.</li>
+        <li>End every day by writing down the one thing you will start tomorrow.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tagline">Traps</p>
+      <ul class="rule-list">
+        <li>Do not build the design system first. Pick a component library and move on.</li>
+        <li>Do not make the itinerary builder fancy. A list of days with add, edit, delete and drag is enough.</li>
+        <li>Do not let money live in two places. One price calculation function, used by the checkout and the admin both.</li>
+        <li>If a task takes more than a day, it was two tasks. Split it and flag the leftover.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>Tick marks and flags are saved in this browser only · Reset clears them</footer>
+
+</div>
+
+<script>
+const WEEKS = [
+  {
+    no:"Week 1", days:"Days 1–5", title:"Foundations and the trip record",
+    goal:"By Friday you can create a complete trip — photos, day-by-day plan, departures, prices — through an admin screen, without touching the database.",
+    checkpoint:"Add one real trip from scratch in under 20 minutes using only the admin panel. If you had to open the database once, something is missing.",
+    tasks:[
+      ["Set up the project, pick your tools, get a blank page running","Setup"],
+      ["Set up the database and connect it to the app","Setup"],
+      ["Put it online at a temporary web address so deploys are already solved","Setup"],
+      ["Build the trip table with the identity and route fields","Data"],
+      ["Build tables for itinerary days, departures, inclusions and exclusions","Data"],
+      ["Build tables for bookings, travellers, payments and coupons","Data"],
+      ["Get photo uploading working and stored somewhere permanent","Setup"],
+      ["Admin login for one owner account","Admin"],
+      ["Admin shell — sidebar, header, and empty pages for each section","Admin"],
+      ["Admin: list, add, edit and delete a trip","Admin"],
+      ["Admin: day-by-day itinerary builder inside a trip","Admin"],
+      ["Admin: add departures with dates, seats and price","Admin"],
+      ["Admin: manage destinations and categories","Admin"],
+      ["Enter three real trips end to end and see what fields you forgot","Check"]
+    ]
+  },
+  {
+    no:"Week 2", days:"Days 6–10", title:"The site a traveller sees",
+    goal:"By Friday a stranger can land on the home page, find a trip that suits them, read everything about it, and want to book — even though the book button does nothing yet.",
+    checkpoint:"Open the site on your phone and go from home page to a trip page as if you were a customer. Would you trust it with fifteen thousand rupees?",
+    tasks:[
+      ["Site layout — header, footer, mobile menu","Website"],
+      ["Home page — hero, search, featured trips, categories","Website"],
+      ["Trip listing page pulling live trips from the database","Website"],
+      ["Filters: destination, month, number of days, budget, trip type","Website"],
+      ["Search by trip name and destination","Website"],
+      ["Trip page top — photos, price, next departures, book button","Website"],
+      ["Trip page — day-by-day itinerary section","Website"],
+      ["Trip page — inclusions, exclusions, things to carry","Website"],
+      ["Trip page — policies, FAQs and reviews","Website"],
+      ["Sticky booking box showing departure dates and seats left","Website"],
+      ["Destination pages that list all trips to one place","Website"],
+      ["Enquiry form that saves a lead into the admin panel","Website"],
+      ["Make every page work properly on a phone","Website"],
+      ["Page titles, descriptions and share images so Google and WhatsApp show it well","Website"]
+    ]
+  },
+  {
+    no:"Week 3", days:"Days 11–15", title:"Taking the booking and the money",
+    goal:"By Friday a real card can pay a real advance and a seat is genuinely held. This is the week the project becomes a business.",
+    checkpoint:"Book the same trip twice with test cards, then cancel one. Seats left must be right, both bookings must appear in admin, and the money must add up.",
+    tasks:[
+      ["Booking step 1 — choose departure, number of travellers, room sharing","Booking"],
+      ["Booking step 2 — traveller details, ID, food preference, emergency contact","Booking"],
+      ["Booking step 3 — price summary with GST, advance and total","Money"],
+      ["One price calculation used by both checkout and admin","Money"],
+      ["Coupon codes — create in admin, apply at checkout, count usage","Money"],
+      ["Connect the payment gateway in test mode and take the advance","Money"],
+      ["Confirm the booking, hold the seat, generate a booking ID","Booking"],
+      ["Handle the payment that fails or gets abandoned halfway","Booking"],
+      ["Confirmation page and confirmation email with the itinerary attached","Booking"],
+      ["Balance payment link for the remaining amount","Money"],
+      ["Traveller account — my bookings, download voucher","Booking"],
+      ["Admin: bookings list with filters, open one booking, change its status","Admin"],
+      ["Admin: record an offline payment and mark a refund","Admin"],
+      ["Cancellation rules applied automatically by date slab","Money"]
+    ]
+  },
+  {
+    no:"Week 4", days:"Days 16–20", title:"Numbers, polish and going live",
+    goal:"By Friday you can answer 'how is the business doing' from one screen, and the site is safe enough to accept real money from strangers.",
+    checkpoint:"Spend one hour as a customer and one hour as a staff member. Write down every rough edge. Fix the ones that touch money or trust; park the rest.",
+    tasks:[
+      ["Dashboard cards — bookings, revenue, seats filled, payments pending","Admin"],
+      ["Charts — bookings over time, revenue by trip, top destinations","Admin"],
+      ["Departure health view — which batches are filling and which are not","Admin"],
+      ["Leads board — new, contacted, converted, lost, with notes","Admin"],
+      ["Departure manifest — everyone travelling on a date, with phone and ID","Admin"],
+      ["Excel downloads for bookings, travellers and payments","Admin"],
+      ["Payment-due list to chase before each departure","Admin"],
+      ["Staff account with limited access, separate from the owner","Admin"],
+      ["Admin control of blogs, testimonials, home banners and FAQs","Admin"],
+      ["Speed pass — compress images, fix slow pages","Check"],
+      ["Safety pass — lock admin routes, validate every form, block price tampering","Check"],
+      ["Error pages, empty states and loading states everywhere","Check"],
+      ["Test the whole thing on a real phone on mobile data","Check"],
+      ["Point the real domain at it, switch payments to live, take a real booking","Check"]
+    ]
+  }
+];
+
+const KEY = "fwtl-state-v1";
+let state = {done:{}, flag:{}};
+try{ const raw = localStorage.getItem(KEY); if(raw) state = Object.assign({done:{},flag:{}}, JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+const weeksEl = document.getElementById("weeks");
+WEEKS.forEach((w, wi) => {
+  const sec = document.createElement("div");
+  sec.className = "week";
+  const list = w.tasks.map((t, ti) => {
+    const id = "w" + wi + "t" + ti;
+    const done = !!state.done[id], flagged = !!state.flag[id];
+    return '<li class="task' + (done?" done":"") + (flagged?" flagged":"") + '" data-id="' + id + '" data-week="' + wi + '">' +
+      '<input type="checkbox" id="' + id + '"' + (done?" checked":"") + ' aria-label="Mark done">' +
+      '<label class="task-text" for="' + id + '">' + t[0] + '</label>' +
+      '<span class="tag">' + t[1] + '</span>' +
+      '<button class="flagbtn" type="button" title="Flag as needing attention" aria-pressed="' + flagged + '">!</button>' +
+    '</li>';
+  }).join("");
+  sec.innerHTML =
+    '<div class="week-head"><span class="week-no">' + w.no + '</span>' +
+    '<h3 class="week-title">' + w.title + '</h3>' +
+    '<span class="week-days">' + w.days + '</span></div>' +
+    '<p class="week-goal">' + w.goal + '</p>' +
+    '<div class="week-prog"><div class="bar"><div class="fill" id="wf' + wi + '"></div></div><span class="num" id="wn' + wi + '"></span></div>' +
+    '<ul class="tasks">' + list + '</ul>' +
+    '<div class="checkpoint"><b>End of week check</b>' + w.checkpoint + '</div>';
+  weeksEl.appendChild(sec);
+});
+
+function refresh(){
+  let total = 0, done = 0;
+  WEEKS.forEach((w, wi) => {
+    let wd = 0;
+    w.tasks.forEach((t, ti) => { if(state.done["w"+wi+"t"+ti]) wd++; });
+    total += w.tasks.length; done += wd;
+    const pct = Math.round(wd / w.tasks.length * 100);
+    document.getElementById("wf"+wi).style.width = pct + "%";
+    document.getElementById("wn"+wi).textContent = wd + " of " + w.tasks.length + " done";
+  });
+  document.getElementById("railFill").style.width = (total ? Math.round(done/total*100) : 0) + "%";
+  document.getElementById("railCount").textContent = done + " / " + total;
+
+  const flagged = [];
+  document.querySelectorAll("li.task").forEach(li => {
+    if(state.flag[li.dataset.id]) flagged.push(WEEKS[li.dataset.week].no + " — " + li.querySelector(".task-text").textContent);
+  });
+  const panel = document.getElementById("attention");
+  const listEl = document.getElementById("attentionList");
+  listEl.innerHTML = flagged.map(f => "<li>" + f + "</li>").join("");
+  panel.hidden = flagged.length === 0;
+}
+
+weeksEl.addEventListener("change", e => {
+  if(e.target.type !== "checkbox") return;
+  const li = e.target.closest("li.task");
+  state.done[li.dataset.id] = e.target.checked;
+  li.classList.toggle("done", e.target.checked);
+  save(); refresh();
+});
+
+weeksEl.addEventListener("click", e => {
+  const btn = e.target.closest(".flagbtn");
+  if(!btn) return;
+  const li = btn.closest("li.task");
+  const on = !state.flag[li.dataset.id];
+  state.flag[li.dataset.id] = on;
+  li.classList.toggle("flagged", on);
+  btn.setAttribute("aria-pressed", String(on));
+  save(); refresh();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = {done:{}, flag:{}};
+  save();
+  document.querySelectorAll("li.task").forEach(li => {
+    li.classList.remove("done","flagged");
+    li.querySelector("input").checked = false;
+    li.querySelector(".flagbtn").setAttribute("aria-pressed","false");
+  });
+  refresh();
+});
+
+refresh();
+</script>
+</body>
+</html>
