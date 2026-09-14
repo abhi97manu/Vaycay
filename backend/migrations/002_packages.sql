@@ -18,8 +18,6 @@ CREATE TABLE IF NOT EXISTS destinations (
   CREATE TABLE IF NOT EXISTS trips (
     id INT AUTO_INCREMENT PRIMARY KEY,
     destination_id INT NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     starting_point VARCHAR(255) NOT NULL,
     ending_point VARCHAR(255) NOT NULL,
