@@ -1,4 +1,4 @@
-Use vaycay_db;
+Use vacay_db;
 
 CREATE TABLE IF NOT EXISTS departures (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,8 +8,10 @@ CREATE TABLE IF NOT EXISTS departures (
     available_seats INT,
     trip_id INT,
     destintaion_id INT,
-    FOREIGN KEY (trip_id) REFERENCES trip (id) ON DELETE CASCADE
-)
+    FOREIGN KEY (trip_id) REFERENCES trips (id) ON DELETE CASCADE
+)ENGINE=InnoDB 
+  DEFAULT CHARSET= utf8mb4
+  COLLATE=utf8mb4_unicode_ci; 
 
 CREATE TABLE IF NOT EXISTS itenary (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,10 +19,12 @@ departure_id INT NOT NULL,
 itenary_days INT NOT NULL,
 description VARCHAR(255) NOT NULL,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (departure_id) REFERENCES departures(id) ON DELETE CASCADE
 
-)
+)ENGINE=InnoDB 
+  DEFAULT CHARSET= utf8mb4
+  COLLATE=utf8mb4_unicode_ci; 
 
 CREATE TABLE IF NOT EXISTS travellers (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,8 +33,10 @@ CREATE TABLE IF NOT EXISTS travellers (
     email VARCHAR(255) NOT NULL,
     departure_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (departure_id) REFERENCES departures(id) ON DELETE CASCADE
+    FOREIGN KEY (departure_id) REFERENCES departures(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 
-)
+)ENGINE=InnoDB 
+  DEFAULT CHARSET= utf8mb4
+  COLLATE=utf8mb4_unicode_ci; 
 

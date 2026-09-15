@@ -15,17 +15,20 @@ export const addDest = async (destination: any) : Promise<boolean>=>{
             return true;
         } catch (error) {
            
-            throw error;
+            throw new Error("unable to add destination");
         }
 }
 
-export const addTrip = async (trip :any) : Promise<void> =>{
-    const {name,destination_id, start_date, end_date, photo, price } = trip;
+export const addTrips = async (trip :any) : Promise<boolean> =>{
+    const {name,destination_id, photo, price ,starting_point, ending_point } = trip;
 
-    try{
-        
         const [result] = await pool.query(
-            `INSERT INTO trips (name, destination_id, start_date, end_date, price)`
+            `INSERT INTO trips (name, destination_id, starting_point, ending_point, price) values (?,?,?,?,?)`,
+            [name,destination_id,starting_point, ending_point, price]
         )
-    }
+
+       if(result.length ===0)
+       {
+        throw new Error ("unable to add Trips")
+       }
 }

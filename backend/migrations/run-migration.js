@@ -22,7 +22,10 @@ async function runMigration(){
     });
     const migrationfiles = [
     '001_initial_schema.sql',
-    '002_packages.sql'
+    '002_packages.sql',
+    '003_trip_activities.sql',
+    '004_departures.sql',
+    '005_name_in_trips.sql'
 ]
 
 

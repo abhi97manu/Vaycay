@@ -15,27 +15,8 @@ export async function LoginService(username: string, password: string) {
        return response;
     }
     catch(error){
-        if(error.response?.status === 401){
-           
-            return {
-                message: "Invalid password",
-                status: 401
-            };
-        
-            };
-
-             if(error.response?.status === 404){
-           
-            return {
-                message: "User not available",
-                status: 401
-            };
-        
-            };
-
-
-
-            throw error;
+      
+          throw error;
         }
       
       

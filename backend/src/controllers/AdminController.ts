@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { addDest } from "../services/adminServices.js";
+import { NextFunction, Request, Response } from "express";
+import { addDest,addTrips } from "../services/adminServices.js";
 
 
 interface Destination {
@@ -12,10 +12,10 @@ interface Trip {
   name: string ,
   destination_id : number,
   photo : string,
-  start_date : Date,
-  end_date : Date,
+  starting_point : string,
+  ending_point : string,
   price : number,
-  activities
+
 }
 
 export const adminDashboard = (_request: Request, _response: Response): void => {
@@ -42,11 +42,16 @@ export const addDestination = async (_request: Request, _response: Response): Pr
 
 }
 
-export const addTrip = (_request: Request, _response: Response): void => {
+export const addTrip = async (_request: Request, _response: Response, _next: NextFunction): Promise<void> => {
   const trip: Trip   = _request.body;
 
   try{
-    const trip_added = await addTrip(trip);
+    const trip_added = await addTrips(trip);
+    _response.status(200).json({ message: "Trip created !!"})
+  }
+  catch(err)
+  {
+    _next(err);
   }
 
 }

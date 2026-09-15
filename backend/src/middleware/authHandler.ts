@@ -11,12 +11,13 @@ export function authHandler(_request: Request, _response: Response, next: NextFu
         const authHeader = _request.headers.authorization;
         
         const token = authHeader?.split(" ")[1];
+        
         if(!token){
             return _response.status(401).json({status : true, message: "Unauthorized" });
         }
 
         const user = jwt.verify(token,env.jwtsecret) as User;
-       
+       console.log(user);
         if(user.role !== "admin"){
             return _response.status(403).json({status : true, message: "Forbidden" });
         }

@@ -9,6 +9,7 @@ import {
   analytics as fallbackAnalytics,
   packages as fallbackPackages
 } from "../data/storeData";
+import { AdminNavbar } from "../components/admin/AdminNavbar";
 
 export function AdminPage() {
   const [analytics, setAnalytics] = useState(fallbackAnalytics);
@@ -28,21 +29,18 @@ export function AdminPage() {
   }, []);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-8 text-slate">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <p className="section-copy">Internal</p>
-          <h1 className="mt-2 font-display text-6xl">Vaycay Control</h1>
-        </div>
-        <Link to="/" className="rounded-full border border-black/10 px-5 py-3 text-sm">
-          Back to Site
-        </Link>
-      </div>
-      <section className="grid  gap-6 lg:grid-cols-[0.32fr_0.68fr]">
-        <AdminSidebar />
+     <main className="flex min-h-screen bg-slate-900">
+      <AdminSidebar/>
+      
+      
+      <div className = "flex-1 min-w-0 min-h-screen">
+        <AdminNavbar />
+          <Outlet/>
 
-        <Outlet/>
-        
+      </div>
+         {/* <Link to="/" className="rounded-full border border-black/10 px-5 py-3 text-sm">
+          Back to Site
+        </Link> */}
         {/*<div className="space-y-6">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <div data-admin-card>
@@ -134,7 +132,7 @@ export function AdminPage() {
             </div>
           </div>}
         </div>*/}
-      </section>
+     
     </main>
   );
 }

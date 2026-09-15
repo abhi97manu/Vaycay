@@ -16,7 +16,7 @@ html {
 }
 
 .panel {
-  @apply rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md;
+  @apply rounded-3xl h-32 backdrop-blur-md;
 }
 
 .section-copy {

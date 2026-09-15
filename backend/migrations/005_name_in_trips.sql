@@ -1,0 +1,3 @@
+ALTER TABLE trips
+add COLUMN name VARCHAR(255),
+MODIFY COLUMN activities_id INT ;
