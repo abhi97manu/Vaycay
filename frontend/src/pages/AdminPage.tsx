@@ -15,18 +15,6 @@ export function AdminPage() {
   const [analytics, setAnalytics] = useState(fallbackAnalytics);
   const [packages, setPackages] = useState<TravelPackage[]>(fallbackPackages);
 
-  useEffect(() => {
-    gsap.fromTo(
-      "[data-admin-card]",
-      { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
-    );
-  }, []);
-
-  useEffect(() => {
-    fetchAnalytics().then(setAnalytics);
-    fetchPackages().then(setPackages);
-  }, []);
 
   return (
      <main className="flex min-h-screen bg-orange-500">

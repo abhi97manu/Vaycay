@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Modal from '../components/layout/Modal';
+import { useAdminContext } from '../context/AdminContext';
 
 export const Trips = () => {
+
+  const {modal} = useAdminContext();
+
+  function handleModal(){
+    modal.openModal()
+  }
+
+
   return (
  <section className="min-h-screen min-w-screen rounded-2xl border-2 bg-slate-50 p-5 md:p-6">
+
+   <Modal/>
 
 
   <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -22,6 +34,7 @@ export const Trips = () => {
 
     <button
       className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 hover:shadow-md"
+     onClick = {handleModal}
     >
       <span className="text-lg leading-none">+</span>
       Create Trip
