@@ -29,13 +29,13 @@ export function AdminPage() {
   }, []);
 
   return (
-     <main className="flex min-h-screen bg-slate-900">
+     <main className="flex min-h-screen bg-orange-500">
       <AdminSidebar/>
       
       
       <div className = "flex-1 min-w-0 min-h-screen">
         <AdminNavbar />
-          <Outlet/>
+         <Outlet/>
 
       </div>
          {/* <Link to="/" className="rounded-full border border-black/10 px-5 py-3 text-sm">
