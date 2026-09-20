@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Modal from '../components/layout/Modal';
 import { useAdminContext } from '../context/AdminContext';
+import { tripDetails } from '../components/admin/Formdata';
 
 export const Trips = () => {
 
@@ -14,7 +15,7 @@ export const Trips = () => {
   return (
  <section className="min-h-screen min-w-screen rounded-2xl border-2 bg-slate-50 p-5 md:p-6">
 
-   <Modal/>
+   <Modal children = {tripDetails()} title ="Create Trip" subtitle = "Add the trip details below."/>
 
 
   <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
