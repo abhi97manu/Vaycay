@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getDestination } from '../../Services/ApiServices';
 
 export const tripDetails = () => {
+
+ 
+
+  const [destination , setDestination] = useState("");
+
+  useEffect(()=>{
+     const destination = getDestination();
+  },[])
+
+
+
   return (
   <form className="mx-auto w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
