@@ -1,4 +1,5 @@
 import { pool } from "../config/db.js";
+import { Destination } from "../config/declratives.js";
 
 export const addDest = async (destination: any) : Promise<boolean>=>{
         const {name, region,description,state_id} = destination;
@@ -27,8 +28,31 @@ export const addTrips = async (trip :any) : Promise<boolean> =>{
             [name,destination_id,starting_point, ending_point, price]
         )
 
+      
+
        if(result.length ===0)
        {
         throw new Error ("unable to add Trips")
        }
+
+         return true
+}
+
+
+export const getAllDestination = async () : Promise<Destination[]> =>{
+    
+   // let where :string = params;
+        const [result] = await pool.query(
+            'SELECT * FROM destinations' 
+        )
+    
+      
+   if(!result)
+   {
+    throw new Error ("error while fetching destinations");
+   }
+
+   return result as Destination[]
+
+   
 }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { addDest,addTrips } from "../services/adminServices.js";
+import { addDest,addTrips, getAllDestination } from "../services/adminServices.js";
 
 
 interface Destination {
@@ -24,6 +24,23 @@ export const adminDashboard = (_request: Request, _response: Response): void => 
 
 export const adminAnalytics = (_request: Request, _response: Response): void => {
 
+}
+
+export const getAllDestinations = async(_request : Request, _response: Response, _next :NextFunction) : Promise <void> =>{
+
+  const params  = _request.params;
+  try{
+    
+    const [destination] = await getAllDestination();
+
+
+    console.log(destination);
+    _response.status(200).json({status : true, message : "Succesfully fetched!!", data : destination})
+
+  }
+  catch (error){
+    _next(error)
+  }
 }
 
 export const addDestination = async (_request: Request, _response: Response): Promise<void> => {

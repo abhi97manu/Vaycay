@@ -41,9 +41,9 @@ export async function LoginService(username: string, password: string) {
 
 export async function getDestination(id? : number) : Promise<apiResult<Destination>>{
         try{
-            console.log({SERVER_URL});
+            
             const result = await axios.get<apiResult<Destination>>(`${SERVER_URL}/admin/destinations`)
-
+            console.log("Result : ",result)
             if(result.data.status === false)
                 {
                     console.log("errr", result.data.message)
