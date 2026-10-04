@@ -46,11 +46,7 @@ export const getAllDestination = async () : Promise<Destination[]> =>{
             'SELECT * FROM destinations' 
         )
     
-      
-   if(!result)
-   {
-    throw new Error ("error while fetching destinations");
-   }
+      console.log("Result : ",result)
 
    return result as Destination[]
 

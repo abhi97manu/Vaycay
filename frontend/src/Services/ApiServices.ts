@@ -3,7 +3,7 @@ import axios from 'axios'
 import {env} from '../config/constants'
 
 const SERVER_URL = env.SERVER_URL;
-console.log(SERVER_URL)
+const server_versionRoute = env.server_versionRoute;
 
 
  interface Destination {
@@ -22,7 +22,7 @@ interface apiResult<T> {
 export async function LoginService(username: string, password: string) {
     //console.log("LoginService called with email:", username, "and password:", password);
     try{
-       const response = await axios.post(`${SERVER_URL}/auth/login`, {
+       const response = await axios.post(`${SERVER_URL}${server_versionRoute}/auth/login`, {
             username,
             password
         } )
@@ -39,11 +39,17 @@ export async function LoginService(username: string, password: string) {
 }
 
 
-export async function getDestination(id? : number) : Promise<apiResult<Destination>>{
+export async function getDestination(id? : number) : Promise<apiResult<Destination[]>>{
         try{
             
-            const result = await axios.get<apiResult<Destination>>(`${SERVER_URL}/admin/destinations`)
-            console.log("Result : ",result)
+            const result = await axios.get<apiResult<Destination[]>>(`${SERVER_URL}${server_versionRoute}/admin/destinations`,
+                {
+                    headers : {
+                        'Authorization' : `Bearer ${localStorage.getItem('user_token')}`
+                    }
+                }
+            )
+        
             if(result.data.status === false)
                 {
                     console.log("errr", result.data.message)

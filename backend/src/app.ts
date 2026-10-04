@@ -9,6 +9,8 @@ import { loginRoutes } from "./routes/loginRoutes.js";
 
 export const app = express();
 
+const versionRoute = env.versionRoute;
+
 app.use(
   cors({
     origin: env.clientOrigin
@@ -16,12 +18,12 @@ app.use(
 );
 app.use(express.json());
 
-app.get("/api/health", (_request, response) => {
+app.get(`${versionRoute}/health`, (_request, response) => {
   response.json({ status: "ok" });
 });
 
 
-app.use("/api/v1/auth/login", loginRoutes);
-app.use("/api/v1/admin", adminRoutes);
-app.get("/api/v1/ai_req",  AIassist)
+app.use(`${versionRoute}/auth/login`, loginRoutes);
+app.use(`${versionRoute}/admin`, adminRoutes);
+app.get(`${versionRoute}/ai_req`, AIassist);
 app.use(errorHandler);

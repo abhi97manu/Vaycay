@@ -27,11 +27,10 @@ export const adminAnalytics = (_request: Request, _response: Response): void => 
 }
 
 export const getAllDestinations = async(_request : Request, _response: Response, _next :NextFunction) : Promise <void> =>{
-
-  const params  = _request.params;
+ 
   try{
     
-    const [destination] = await getAllDestination();
+    const destination = await getAllDestination();
 
 
     console.log(destination);

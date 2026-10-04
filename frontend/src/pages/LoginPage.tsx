@@ -39,6 +39,7 @@ const LoginPage = () => {
     
     if(status.status == 200)
     {
+      localStorage.setItem('user_token', status?.data?.token) ////NEED TO REMOVE THIS LATER, JUST FOR TESTING PURPOSES
       navigate('/admin')
     }
   }

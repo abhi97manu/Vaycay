@@ -7,6 +7,7 @@ export const env = {
   clientOrigin: process.env.CLIENT_ORIGIN ?? "http://localhost:5173",
   dbHost: process.env.DB_HOST,
   dbPort: Number(process.env.DB_PORT ?? 3306),
+  versionRoute: process.env.VERSION_ROUTE ?? "/api/v1",
   dbUser: process.env.DB_USER,
   dbPassword: process.env.DB_PASSWORD,
   dbName: process.env.DB_NAME,

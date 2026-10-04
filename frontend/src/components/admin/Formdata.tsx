@@ -1,44 +1,94 @@
-import React, { useEffect, useState } from 'react'
-import { getDestination } from '../../Services/ApiServices';
+import React, { useEffect, useState } from "react";
+import { getDestination } from "../../Services/ApiServices";
 
 export const tripDetails = () => {
+  const [destination, setDestination] = useState([] as any[]);
+  const [days_in_num, setDays_in_num] = useState(0);
 
- 
+  const getAllDestinations = async () => {
+    const destinations = await getDestination();
+    console.log("Destinations : ", destinations.data);
+    setDestination(destinations.data || []);
+  };
 
-  const [destination , setDestination] = useState("");
+  useEffect(() => {
+    getAllDestinations();
 
-  useEffect(()=>{
-     const destination = getDestination();
-  },[])
-
-
+    return () => {
+      setDestination([]);
+    };
+  }, []);
 
   return (
-  <form className="mx-auto w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <form className="mx-auto  w-full max-w-2xl space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        {/* Destination */}
+        <div className="md:col-span-2">
+          <label
+            htmlFor="destination_id"
+            className="mb-2 block text-sm font-medium text-slate-700"
+          >
+            Destination
+          </label>
 
-   
+          <select
+            id="destination_id"
+            name="destination_id"
+            required
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          >
+            <option value="" disabled selected>
+              Select destination
+            </option>
 
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {destination.map((dest: any) => (
+              <option key={dest.id} value={dest.id}>
+                {dest.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Destination */}
-      <div className="md:col-span-2">
-        <label
-          htmlFor="destination_id"
-          className="mb-2 block text-sm font-medium text-slate-700"
-        >
-          Destination
-        </label>
+        {/* Starting Point */}
+        <div>
+          <label
+            htmlFor="starting_point"
+            className="mb-2 block text-sm font-medium text-slate-700"
+          >
+            Starting Point
+          </label>
 
-        <select
-          id="destination_id"
-          name="destination_id"
-          required
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-        >
-          <option value="">Select destination</option>
-        </select>
+          <input
+            id="starting_point"
+            type="text"
+            name="starting_point"
+            maxLength={255}
+            placeholder="e.g. London Heathrow Airport"
+            required
+            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+        </div>
+
+        {/* Ending Point */}
+        <div>
+          <label
+            htmlFor="ending_point"
+            className="mb-2 block text-sm font-medium text-slate-700"
+          >
+            Ending Point
+          </label>
+
+          <input
+            id="ending_point"
+            type="text"
+            name="ending_point"
+            maxLength={255}
+            placeholder="e.g. Central London"
+            required
+            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+        </div>
       </div>
-
       {/* Price */}
       <div>
         <label
@@ -66,86 +116,93 @@ export const tripDetails = () => {
         </div>
       </div>
 
-      {/* Activity */}
-      <div>
-        <label
-          htmlFor="activities_id"
-          className="mb-2 block text-sm font-medium text-slate-700"
-        >
-          Activity
-        </label>
+      {/* Itinerary */}
+      <div className="space-y-6">
+        {/* Number of Days */}
+        <div>
+          <label
+            htmlFor="days"
+            className="mb-2 block text-sm font-medium text-slate-700"
+          >
+            Number of Days
+          </label>
 
-        <select
-          id="activities_id"
-          name="activities_id"
-          required
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-        >
-          <option value="">Select activity</option>
-        </select>
+          <input
+            id="days"
+            type="number"
+            name="days"
+            min="1"
+            value={days_in_num}
+            onChange={(e) => setDays_in_num(parseInt(e.target.value) || 0)}
+            placeholder="e.g. 5"
+            required
+            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+        </div>
+        <div className="overflow gap-2 flex max-h-[300px] flex-col overflow-y-auto rounded-lg border border-slate-300 p-3">
+
+
+      
+
+        {Array.from({ length: days_in_num }, (_, index) => (
+          <div key={index}>
+            <div className="flex w-full gap-3">
+              
+              <div className="w-[90%]">
+                <textarea
+                  id="description-1"
+                  name="description-1"
+                  rows={3}
+                  placeholder="Add details about this activity or meal..."
+                  className="w-full h-full resize-none rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div className="flex w-[10%] flex-col justify-between gap-2">
+                <button
+                  type="button"
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                >
+                  Act
+                </button>
+
+                <button
+                  type="button"
+                  className="rounded-lg border border-blue-300 px-3 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                >
+                  Meal
+                </button>
+
+                <button
+                  type="button"
+                  className="rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-500 transition hover:bg-red-50"
+                >
+                  Del
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+          </div>
       </div>
 
-      {/* Starting Point */}
-      <div>
-        <label
-          htmlFor="starting_point"
-          className="mb-2 block text-sm font-medium text-slate-700"
+
+      {/* Actions */}
+      <div className="flex justify-end gap-3 border-t border-slate-200 pt-5">
+        <button
+          type="button"
+          className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
         >
-          Starting Point
-        </label>
+          Cancel
+        </button>
 
-        <input
-          id="starting_point"
-          type="text"
-          name="starting_point"
-          maxLength={255}
-          placeholder="e.g. London Heathrow Airport"
-          required
-          className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-        />
-      </div>
-
-      {/* Ending Point */}
-      <div>
-        <label
-          htmlFor="ending_point"
-          className="mb-2 block text-sm font-medium text-slate-700"
+        <button
+          type="submit"
+          className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Ending Point
-        </label>
-
-        <input
-          id="ending_point"
-          type="text"
-          name="ending_point"
-          maxLength={255}
-          placeholder="e.g. Central London"
-          required
-          className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-        />
+          Create Trip
+        </button>
       </div>
-    </div>
-
-    {/* Actions */}
-    <div className="flex justify-end gap-3 border-t border-slate-200 pt-5">
-      <button
-        type="button"
-        className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-      >
-        Cancel
-      </button>
-
-      <button
-        type="submit"
-        className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        Create Trip
-      </button>
-    </div>
-
-  </form>
-);
-}
-
-
-
+    </form>
+  );
+};
