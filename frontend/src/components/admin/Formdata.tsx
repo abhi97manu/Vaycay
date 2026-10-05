@@ -4,6 +4,15 @@ import { getDestination } from "../../Services/ApiServices";
 export const tripDetails = () => {
   const [destination, setDestination] = useState([] as any[]);
   const [days_in_num, setDays_in_num] = useState(0);
+  const [startingP, setStartingP] = useState("");
+  const [endingP, setEndingP] = useState("");
+  const [tripPrice, setTripPrice] = useState(0.0);
+  type Meal = "Breakfast"| "Lunch"|"Dinner"|"None";
+  type itenary = {
+    day1: Number,
+    detail : String,
+    meal : Meal  }
+  const [itenaryArray, setItenaryArray] = useState<itenary[]>([])
 
   const getAllDestinations = async () => {
     const destinations = await getDestination();
@@ -62,7 +71,9 @@ export const tripDetails = () => {
             id="starting_point"
             type="text"
             name="starting_point"
-            maxLength={255}
+            value = {startingP}
+            onChange = {(e)=>setStartingP(e.target.value)}
+             maxLength={255}
             placeholder="e.g. London Heathrow Airport"
             required
             className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
@@ -82,6 +93,8 @@ export const tripDetails = () => {
             id="ending_point"
             type="text"
             name="ending_point"
+            value = {endingP}
+            onChange = {(e)=>setEndingP(e.target.value)}
             maxLength={255}
             placeholder="e.g. Central London"
             required
@@ -109,6 +122,8 @@ export const tripDetails = () => {
             name="price"
             step="0.01"
             min="0"
+            value = {tripPrice}
+            onChange = {(e)=> setTripPrice(parseFloat(e.target.value))}
             placeholder="0.00"
             required
             className="w-full rounded-lg border border-slate-300 py-2.5 pl-8 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
