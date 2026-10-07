@@ -134,7 +134,7 @@ export const tripDetails = () => {
       {/* Itinerary */}
       <div className="space-y-6">
         {/* Number of Days */}
-        <div>
+        {/* <div>
           <label
             htmlFor="days"
             className="mb-2 block text-sm font-medium text-slate-700"
@@ -153,7 +153,9 @@ export const tripDetails = () => {
             required
             className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
-        </div>
+        </div> */}
+
+        
         <div className="overflow gap-2 flex max-h-[300px] flex-col overflow-y-auto rounded-lg border border-slate-300 p-3">
 
 
@@ -168,6 +170,7 @@ export const tripDetails = () => {
                   id="description-1"
                   name="description-1"
                   rows={3}
+                  
                   placeholder="Add details about this activity or meal..."
                   className="w-full h-full resize-none rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 />

@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VAYCAY Travels — Admin Dashboard (Reference Mockup)</title>
+
+  <!--
+    ============================================================================
+    STANDALONE REFERENCE MOCKUP — NOT PART OF THE REACT APP
+    ----------------------------------------------------------------------------
+    Purpose: show, in one screen, EVERYTHING an admin of a travel agency can see
+    and do on their dashboard. Pure HTML + Tailwind (CDN) + inline SVG charts.
+    No build step, no JS framework, no data from the backend — all values are
+    mock data modeled on your real VAYCAY packages (storeData.ts / mockData.ts).
+
+    Each major block is labelled with a /* FEATURE */ comment explaining what the
+    admin gets from it, so you can decide what to build into the real app.
+    ============================================================================
+  -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            coral: "#ff5a3c",
+            slate: { 900: "#0f172a" }
+          },
+          fontFamily: {
+            display: ["Georgia", "ui-serif", "serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { background: #f1f5f9; }
+    /* thin scrollbars so tables feel app-like */
+    ::-webkit-scrollbar { height: 8px; width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  </style>
+</head>
+
+<body class="text-slate-800 antialiased">
+
+  <div class="flex min-h-screen">
+
+    <!-- ========================================================================
+         FEATURE: SIDEBAR / PRIMARY NAVIGATION
+         The admin's map of the whole back office. Every top-level area the
+         agency needs to run is one click away. Active item is highlighted.
+    ========================================================================= -->
+    <aside class="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 lg:flex">
+      <div class="mb-8 flex items-center gap-3 px-2">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500 text-lg font-bold text-white">V</div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-slate-900">VAYCAY</h1>
+          <p class="text-xs font-medium tracking-wide text-slate-500">TRAVELS · ADMIN</p>
+        </div>
+      </div>
+
+      <nav class="flex flex-1 flex-col gap-1 text-sm font-semibold text-slate-600">
+        <a class="flex items-center gap-3 rounded-xl bg-orange-50 px-4 py-3 text-orange-600" href="#">
+          <span>🏠</span> Dashboard
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#packages">
+          <span>🧳</span> Packages
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#departures">
+          <span>🗓️</span> Departures
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#bookings">
+          <span>🎟️</span> Bookings
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#enquiries">
+          <span>💬</span> Enquiries / Leads
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#payments">
+          <span>💳</span> Payments
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#customers">
+          <span>👥</span> Customers
+        </a>
+        <a class="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-orange-50 hover:text-orange-600" href="#reviews">
+          <span>⭐</span> Reviews
+        </a>
+      </nav>
+
+      <div class="mt-6 rounded-2xl bg-slate-900 p-4 text-white">
+        <p class="text-xs font-semibold uppercase tracking-wider text-orange-400">Concierge AI</p>
+        <p class="mt-2 text-sm leading-5 text-slate-300">3 high-intent chat leads waiting in the queue.</p>
+        <a href="#enquiries" class="mt-3 inline-block rounded-lg bg-orange-500 px-3 py-2 text-xs font-semibold">Open queue →</a>
+      </div>
+    </aside>
+
+
+    <!-- ===================== MAIN COLUMN ===================== -->
+    <div class="flex min-w-0 flex-1 flex-col">
+
+      <!-- ====================================================================
+           FEATURE: TOP BAR
+           Global search (find a booking / customer / package), date-range the
+           whole dashboard reacts to, notifications, and the admin's profile.
+      ===================================================================== -->
+      <header class="sticky top-0 z-10 flex items-center gap-4 border-b border-slate-200 bg-white/90 px-5 py-4 backdrop-blur">
+        <div class="relative flex-1 max-w-md">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+          <input class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-sm outline-none focus:border-orange-300 focus:bg-white"
+                 placeholder="Search bookings, customers, packages…" />
+        </div>
+
+        <select class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-600">
+          <option>Last 30 days</option>
+          <option>This month</option>
+          <option>This quarter</option>
+          <option>Year to date</option>
+        </select>
+
+        <button class="relative rounded-xl border border-slate-200 bg-white p-2.5 text-lg">
+          🔔
+          <span class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white">5</span>
+        </button>
+
+        <div class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-1.5">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-600">R</div>
+          <div class="hidden sm:block">
+            <p class="text-sm font-semibold leading-4 text-slate-900">Rishabh</p>
+            <p class="text-xs text-slate-400">Super Admin</p>
+          </div>
+        </div>
+      </header>
+
+
+      <main class="flex-1 space-y-8 p-5 md:p-7">
+
+        <!-- =================================================================
+             FEATURE: PAGE HEADER + PRIMARY ACTION
+             Greeting + the single most common action (create a new package).
+        ================================================================== -->
+        <section class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm font-medium text-orange-500">VAYCAY Travels</p>
+            <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">Good morning, Rishabh 👋</h2>
+            <p class="mt-1 text-sm text-slate-500">Here's how the travel business is doing today — 7 Oct 2026.</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">Export report</button>
+            <button class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-orange-600">
+              <span class="text-lg leading-none">+</span> New Package
+            </button>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE: KPI CARDS (the "at a glance" row)
+             The 5 numbers an agency owner checks first: money in, demand,
+             what's live, how well visitors convert, and what needs attention.
+        ================================================================== -->
+        <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-slate-500">Revenue (30d)</p>
+                <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">₹18.6L</p>
+                <p class="mt-2 text-xs font-medium text-emerald-600">↑ 8.4% vs last period</p>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-500">₹</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-slate-500">Bookings</p>
+                <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">482</p>
+                <p class="mt-2 text-xs font-medium text-emerald-600">↑ 12% from last month</p>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">🎟️</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-slate-500">Active Packages</p>
+                <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">06</p>
+                <p class="mt-2 text-xs font-medium text-slate-400">across 3 categories</p>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-500">🧳</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-slate-500">Conversion</p>
+                <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">6.1%</p>
+                <p class="mt-2 text-xs font-medium text-rose-500">↓ 0.3% vs last period</p>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-500">📈</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-slate-500">Open Enquiries</p>
+                <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">14</p>
+                <p class="mt-2 text-xs font-medium text-orange-500">3 high-intent · act now</p>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-500">💬</div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE: REVENUE TREND + BOOKINGS-BY-CATEGORY
+             Left: are we growing? (monthly revenue bars).
+             Right: which product line sells? (mountains / beaches / nature).
+             Both are hand-rolled SVG so the file stays dependency-free.
+        ================================================================== -->
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+
+          <!-- Revenue trend -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-orange-500">Revenue</p>
+                <h3 class="mt-2 text-xl font-bold text-slate-900">Monthly revenue trend</h3>
+                <p class="mt-1 text-xs text-slate-400">Apr 2026 – Oct 2026 · in ₹ lakh</p>
+              </div>
+              <div class="flex gap-2 text-xs">
+                <span class="rounded-full bg-orange-50 px-3 py-1 font-semibold text-orange-600">Revenue</span>
+                <span class="rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-500">Target</span>
+              </div>
+            </div>
+
+            <!-- simple SVG bar chart -->
+            <svg viewBox="0 0 560 220" class="mt-6 w-full" role="img" aria-label="Monthly revenue bar chart">
+              <!-- gridlines -->
+              <g stroke="#e2e8f0" stroke-width="1">
+                <line x1="40" y1="20"  x2="560" y2="20"  />
+                <line x1="40" y1="70"  x2="560" y2="70"  />
+                <line x1="40" y1="120" x2="560" y2="120" />
+                <line x1="40" y1="170" x2="560" y2="170" />
+              </g>
+              <g fill="#94a3b8" font-size="10" text-anchor="end">
+                <text x="34" y="24">24</text>
+                <text x="34" y="74">18</text>
+                <text x="34" y="124">12</text>
+                <text x="34" y="174">6</text>
+              </g>
+              <!-- bars: value out of 24L, baseline y=170, scale 150px = 24 -->
+              <g>
+                <rect x="70"  y="108" width="36" height="62"  rx="6" fill="#fdba74" />
+                <rect x="140" y="95"  width="36" height="75"  rx="6" fill="#fdba74" />
+                <rect x="210" y="80"  width="36" height="90"  rx="6" fill="#fb923c" />
+                <rect x="280" y="68"  width="36" height="102" rx="6" fill="#fb923c" />
+                <rect x="350" y="55"  width="36" height="115" rx="6" fill="#f97316" />
+                <rect x="420" y="40"  width="36" height="130" rx="6" fill="#f97316" />
+                <rect x="490" y="24"  width="36" height="146" rx="6" fill="#ea580c" />
+              </g>
+              <g fill="#64748b" font-size="10" text-anchor="middle">
+                <text x="88"  y="188">Apr</text>
+                <text x="158" y="188">May</text>
+                <text x="228" y="188">Jun</text>
+                <text x="298" y="188">Jul</text>
+                <text x="368" y="188">Aug</text>
+                <text x="438" y="188">Sep</text>
+                <text x="508" y="188">Oct</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Bookings by category (donut) -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <p class="text-xs font-semibold uppercase tracking-wider text-orange-500">Demand mix</p>
+            <h3 class="mt-2 text-xl font-bold text-slate-900">Bookings by category</h3>
+
+            <div class="mt-4 flex items-center justify-center">
+              <!-- donut via stroke-dasharray; circumference = 2πr = 2*π*60 ≈ 377 -->
+              <svg viewBox="0 0 160 160" class="h-44 w-44 -rotate-90">
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#f1f5f9" stroke-width="24" />
+                <!-- Mountains 48% -> 181 -->
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#f97316" stroke-width="24"
+                        stroke-dasharray="181 377" stroke-dashoffset="0" />
+                <!-- Beaches 33% -> 124, offset 181 -->
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#38bdf8" stroke-width="24"
+                        stroke-dasharray="124 377" stroke-dashoffset="-181" />
+                <!-- Nature 19% -> 72, offset 305 -->
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#34d399" stroke-width="24"
+                        stroke-dasharray="72 377" stroke-dashoffset="-305" />
+              </svg>
+            </div>
+
+            <ul class="mt-4 space-y-2 text-sm">
+              <li class="flex items-center justify-between">
+                <span class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-orange-500"></span> Mountains</span>
+                <span class="font-semibold text-slate-800">48%</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <span class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-sky-400"></span> Beaches</span>
+                <span class="font-semibold text-slate-800">33%</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <span class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-emerald-400"></span> Nature</span>
+                <span class="font-semibold text-slate-800">19%</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE: PACKAGE MANAGEMENT TABLE  (the core CRUD surface)
+             Every trip the agency sells, with inventory (slots), pricing,
+             category, live/draft/sold-out status, and per-row actions.
+             This is where "New Package" lands and where edits happen.
+        ================================================================== -->
+        <section id="packages" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div class="flex flex-col gap-4 border-b border-slate-100 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-orange-500">Inventory</p>
+              <h3 class="mt-1 text-xl font-bold text-slate-900">Packages</h3>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <button class="rounded-full bg-orange-50 px-3 py-1.5 font-semibold text-orange-600">All</button>
+              <button class="rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-500">Mountains</button>
+              <button class="rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-500">Beaches</button>
+              <button class="rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-500">Nature</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+              <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-400">
+                <tr>
+                  <th class="px-6 py-4 font-medium">Package</th>
+                  <th class="px-6 py-4 font-medium">Location</th>
+                  <th class="px-6 py-4 font-medium">Category</th>
+                  <th class="px-6 py-4 font-medium">Duration</th>
+                  <th class="px-6 py-4 font-medium">Price</th>
+                  <th class="px-6 py-4 font-medium">Slots left</th>
+                  <th class="px-6 py-4 font-medium">Status</th>
+                  <th class="px-6 py-4 font-medium text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">Manali Snow Escape <span class="ml-1 rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-600">NEW</span></td>
+                  <td class="px-6 py-4 text-slate-500">Manali, Himachal Pradesh</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-600">Mountains</span></td>
+                  <td class="px-6 py-4 text-slate-500">4D / 3N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹18,999</td>
+                  <td class="px-6 py-4 text-slate-500">18</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Live</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">Kullu Valley Retreat</td>
+                  <td class="px-6 py-4 text-slate-500">Kullu, Himachal Pradesh</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-600">Mountains</span></td>
+                  <td class="px-6 py-4 text-slate-500">3D / 2N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹16,499</td>
+                  <td class="px-6 py-4 text-slate-500">12</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Live</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">Meghalaya Cloud Trail <span class="ml-1 rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-600">NEW</span></td>
+                  <td class="px-6 py-4 text-slate-500">Shillong, Cherrapunji, Dawki</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">Nature</span></td>
+                  <td class="px-6 py-4 text-slate-500">5D / 4N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹24,999</td>
+                  <td class="px-6 py-4 text-slate-500">10</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Live</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">Goa Coast Social</td>
+                  <td class="px-6 py-4 text-slate-500">North and South Goa</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-600">Beaches</span></td>
+                  <td class="px-6 py-4 text-slate-500">4D / 3N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹21,999</td>
+                  <td class="px-6 py-4 text-slate-500">16</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Live</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">Tirthan Hidden Valley <span class="ml-1 rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-600">NEW</span></td>
+                  <td class="px-6 py-4 text-slate-500">Tirthan Valley, Himachal Pradesh</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600">Nature</span></td>
+                  <td class="px-6 py-4 text-slate-500">4D / 3N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹20,999</td>
+                  <td class="px-6 py-4 text-amber-600 font-medium">8 · low</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">Low stock</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 font-semibold text-slate-800">South Goa Slow Stay</td>
+                  <td class="px-6 py-4 text-slate-500">Palolem, Agonda, Cola</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-600">Beaches</span></td>
+                  <td class="px-6 py-4 text-slate-500">5D / 4N</td>
+                  <td class="px-6 py-4 font-medium text-slate-800">₹22,999</td>
+                  <td class="px-6 py-4 text-slate-500">14</td>
+                  <td class="px-6 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">Draft</span></td>
+                  <td class="px-6 py-4 text-right text-slate-400"><button class="hover:text-orange-500">Edit</button> · <button class="hover:text-rose-500">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE ROW: DEPARTURES + ENQUIRIES/LEADS
+             Left: upcoming departures with how full each one is (ops view —
+             when to push marketing vs when to stop selling seats).
+             Right: concierge/chat lead queue (sales view — who to call).
+        ================================================================== -->
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+
+          <!-- Upcoming departures -->
+          <div id="departures" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 p-6">
+              <div>
+                <h3 class="font-bold text-slate-900">Upcoming Departures</h3>
+                <p class="mt-1 text-xs text-slate-400">Seats filled vs capacity</p>
+              </div>
+              <button class="text-sm font-semibold text-orange-500 hover:text-orange-600">View all →</button>
+            </div>
+            <div class="divide-y divide-slate-100">
+              <!-- row -->
+              <div class="p-4">
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">✈</div>
+                    <div>
+                      <p class="text-sm font-semibold text-slate-800">Goa Coast Social</p>
+                      <p class="text-xs text-slate-400">Departs 20 Sep · 14 / 16 seats</p>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Confirmed</span>
+                </div>
+                <div class="h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:88%"></div></div>
+              </div>
+              <div class="p-4">
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">✈</div>
+                    <div>
+                      <p class="text-sm font-semibold text-slate-800">Manali Snow Escape</p>
+                      <p class="text-xs text-slate-400">Departs 27 Sep · 9 / 18 seats</p>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">Filling</span>
+                </div>
+                <div class="h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-400" style="width:50%"></div></div>
+              </div>
+              <div class="p-4">
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">✈</div>
+                    <div>
+                      <p class="text-sm font-semibold text-slate-800">Meghalaya Cloud Trail</p>
+                      <p class="text-xs text-slate-400">Departs 04 Oct · 10 / 10 seats</p>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">Sold out</span>
+                </div>
+                <div class="h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-rose-500" style="width:100%"></div></div>
+              </div>
+              <div class="p-4">
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">✈</div>
+                    <div>
+                      <p class="text-sm font-semibold text-slate-800">Tirthan Hidden Valley</p>
+                      <p class="text-xs text-slate-400">Departs 12 Oct · 3 / 8 seats</p>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">Filling</span>
+                </div>
+                <div class="h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-400" style="width:38%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enquiries / concierge leads -->
+          <div id="enquiries" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 p-6">
+              <div>
+                <h3 class="font-bold text-slate-900">Enquiries / Concierge Leads</h3>
+                <p class="mt-1 text-xs text-slate-400">High-intent chat leads routed to the desk</p>
+              </div>
+              <span class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-600">3 hot</span>
+            </div>
+            <div class="divide-y divide-slate-100">
+              <div class="flex items-center justify-between p-4 hover:bg-slate-50">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-600">A</div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-800">Aditi Sharma</p>
+                    <p class="text-xs text-slate-400">Asked about Meghalaya · 5 pax · Nov</p>
+                  </div>
+                </div>
+                <span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">Hot</span>
+              </div>
+              <div class="flex items-center justify-between p-4 hover:bg-slate-50">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 font-bold text-sky-600">K</div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-800">Karan Mehta</p>
+                    <p class="text-xs text-slate-400">Goa honeymoon · wants pickup add-on</p>
+                  </div>
+                </div>
+                <span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">Hot</span>
+              </div>
+              <div class="flex items-center justify-between p-4 hover:bg-slate-50">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 font-bold text-emerald-600">S</div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-800">Sneha Rao</p>
+                    <p class="text-xs text-slate-400">Comparing Manali vs Tirthan</p>
+                  </div>
+                </div>
+                <span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">Warm</span>
+              </div>
+              <div class="flex items-center justify-between p-4 hover:bg-slate-50">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-100 font-bold text-violet-600">R</div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-800">Rohit Nair</p>
+                    <p class="text-xs text-slate-400">Group of 8 · Rajasthan custom tour</p>
+                  </div>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">New</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE ROW: RECENT BOOKINGS + PAYMENTS
+             Left: latest orders with customer, package, amount and status —
+             the agency's live sales feed.
+             Right: money movement (customer payments in, supplier costs out).
+        ================================================================== -->
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+
+          <!-- Recent bookings -->
+          <div id="bookings" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 p-6">
+              <div>
+                <h3 class="font-bold text-slate-900">Recent Bookings</h3>
+                <p class="mt-1 text-xs text-slate-400">Latest orders across all packages</p>
+              </div>
+              <button class="text-sm font-semibold text-orange-500 hover:text-orange-600">View all →</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-left text-sm">
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-400">
+                  <tr>
+                    <th class="px-5 py-3 font-medium">Booking</th>
+                    <th class="px-5 py-3 font-medium">Customer</th>
+                    <th class="px-5 py-3 font-medium">Amount</th>
+                    <th class="px-5 py-3 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3"><p class="font-semibold text-slate-800">#VY-2041</p><p class="text-xs text-slate-400">Goa Coast Social</p></td>
+                    <td class="px-5 py-3 text-slate-600">Karan Mehta</td>
+                    <td class="px-5 py-3 font-medium text-slate-800">₹43,998</td>
+                    <td class="px-5 py-3"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Confirmed</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3"><p class="font-semibold text-slate-800">#VY-2040</p><p class="text-xs text-slate-400">Meghalaya Cloud Trail</p></td>
+                    <td class="px-5 py-3 text-slate-600">Aditi Sharma</td>
+                    <td class="px-5 py-3 font-medium text-slate-800">₹1,24,995</td>
+                    <td class="px-5 py-3"><span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">Pending</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3"><p class="font-semibold text-slate-800">#VY-2039</p><p class="text-xs text-slate-400">Manali Snow Escape</p></td>
+                    <td class="px-5 py-3 text-slate-600">Sneha Rao</td>
+                    <td class="px-5 py-3 font-medium text-slate-800">₹37,998</td>
+                    <td class="px-5 py-3"><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">Confirmed</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3"><p class="font-semibold text-slate-800">#VY-2038</p><p class="text-xs text-slate-400">South Goa Slow Stay</p></td>
+                    <td class="px-5 py-3 text-slate-600">Rohit Nair</td>
+                    <td class="px-5 py-3 font-medium text-slate-800">₹22,999</td>
+                    <td class="px-5 py-3"><span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">Cancelled</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Payments / transactions -->
+          <div id="payments" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 p-6">
+              <div>
+                <h3 class="font-bold text-slate-900">Recent Transactions</h3>
+                <p class="mt-1 text-xs text-slate-400">Customer payments in · supplier costs out</p>
+              </div>
+              <button class="text-sm font-semibold text-orange-500 hover:text-orange-600">View all →</button>
+            </div>
+            <div class="divide-y divide-slate-100">
+              <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-500">↓</div>
+                  <div><p class="text-sm font-semibold text-slate-800">Customer Payment</p><p class="text-xs text-slate-400">Goa Coast Social · #VY-2041</p></div>
+                </div>
+                <p class="text-sm font-semibold text-emerald-600">+ ₹43,998</p>
+              </div>
+              <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">↑</div>
+                  <div><p class="text-sm font-semibold text-slate-800">Hotel Booking</p><p class="text-xs text-slate-400">Meghalaya supplier</p></div>
+                </div>
+                <p class="text-sm font-semibold text-slate-700">- ₹28,500</p>
+              </div>
+              <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-500">↓</div>
+                  <div><p class="text-sm font-semibold text-slate-800">Customer Payment</p><p class="text-xs text-slate-400">Manali Snow Escape · #VY-2039</p></div>
+                </div>
+                <p class="text-sm font-semibold text-emerald-600">+ ₹37,998</p>
+              </div>
+              <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-500">↑</div>
+                  <div><p class="text-sm font-semibold text-slate-800">Flight Tickets</p><p class="text-xs text-slate-400">Dubai package supplier</p></div>
+                </div>
+                <p class="text-sm font-semibold text-slate-700">- ₹36,800</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =================================================================
+             FEATURE ROW: TOP DESTINATIONS + REVIEWS
+             Left: which locations drive the most revenue (where to invest).
+             Right: reputation — latest customer ratings & review text.
+        ================================================================== -->
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+
+          <!-- Top destinations -->
+          <div id="customers" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-orange-500">Performance</p>
+                <h3 class="mt-1 text-xl font-bold text-slate-900">Top Destinations</h3>
+              </div>
+              <button class="text-xs font-semibold text-orange-500">This quarter</button>
+            </div>
+            <div class="mt-6 space-y-5">
+              <div>
+                <div class="mb-2 flex justify-between text-sm"><span class="text-slate-600">Goa</span><span class="font-semibold text-slate-800">₹5.4L</span></div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:92%"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm"><span class="text-slate-600">Manali</span><span class="font-semibold text-slate-800">₹4.1L</span></div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:70%"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm"><span class="text-slate-600">Meghalaya</span><span class="font-semibold text-slate-800">₹3.3L</span></div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:56%"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm"><span class="text-slate-600">Kullu</span><span class="font-semibold text-slate-800">₹2.6L</span></div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:44%"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm"><span class="text-slate-600">Tirthan</span><span class="font-semibold text-slate-800">₹1.9L</span></div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-orange-500" style="width:32%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews -->
+          <div id="reviews" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-orange-500">Reputation</p>
+                <h3 class="mt-1 text-xl font-bold text-slate-900">Latest Reviews</h3>
+              </div>
+              <div class="text-right">
+                <p class="text-2xl font-bold text-slate-900">4.7★</p>
+                <p class="text-xs text-slate-400">from 318 reviews</p>
+              </div>
+            </div>
+            <div class="mt-5 space-y-4">
+              <div class="rounded-xl bg-slate-50 p-4">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-semibold text-slate-800">Aditi Sharma · Meghalaya Cloud Trail</p>
+                  <span class="text-sm text-amber-500">★★★★★</span>
+                </div>
+                <p class="mt-1 text-sm text-slate-500">"Living root bridges were unreal and the stays were cosy. Perfectly paced."</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-4">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-semibold text-slate-800">Karan Mehta · Goa Coast Social</p>
+                  <span class="text-sm text-amber-500">★★★★☆</span>
+                </div>
+                <p class="mt-1 text-sm text-slate-500">"Great beach-hopping plan. Pickup add-on could be smoother."</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-4">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-semibold text-slate-800">Sneha Rao · Manali Snow Escape</p>
+                  <span class="text-sm text-amber-500">★★★★★</span>
+                </div>
+                <p class="mt-1 text-sm text-slate-500">"Solang Valley day was the highlight. Guide was fantastic."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <p class="pb-4 text-center text-xs text-slate-400">
+          Reference mockup · VAYCAY Travels admin dashboard · static HTML, not wired to the backend
+        </p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
