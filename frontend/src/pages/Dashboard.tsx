@@ -1,6 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   return (
     <section className="min-h-screen w-full rounded-2xl border-2 border-slate-200 bg-slate-50 p-5 md:p-6">
 
@@ -23,6 +25,7 @@ export const Dashboard = () => {
 
     <button
       type="button"
+      onClick={() => navigate("/admin/trips")}
       className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 hover:shadow-md"
     >
       <span className="text-lg leading-none">+</span>

@@ -75,7 +75,7 @@ export function AdminSidebar() {
         />
       </svg>
 
-      Trips
+      Trips & packages
      </Link>
 
   </nav>

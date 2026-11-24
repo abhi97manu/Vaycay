@@ -24,6 +24,19 @@ export async function getFeaturedPackages(): Promise<TravelPackage[]> {
   return packages.filter((travelPackage) => travelPackage.isNew);
 }
 
+export async function getPublicPackages(): Promise<TravelPackage[]> {
+  if (!pool) return mockPackages;
+  const [rows] = await pool.query(
+    `SELECT p.id, p.name, p.description, p.price, p.category, p.is_new AS isNew,
+            p.stock, p.duration, d.name AS location, p.trip_id AS tripId, p.is_published AS published
+       FROM packages p
+       LEFT JOIN destinations d ON d.id = p.destination_id
+      WHERE p.is_published = 1
+      ORDER BY p.created_at DESC, p.id DESC`
+  );
+  return (rows as TravelPackage[]).map((item) => ({ ...item, isNew: Boolean(item.isNew), published: true }));
+}
+
 export async function getAdminAnalytics() {
   if (!pool) {
     return {

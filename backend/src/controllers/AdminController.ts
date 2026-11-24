@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { addDest,addTrips, getAllDestination } from "../services/adminServices.js";
+import { addDest,addTrips, getAllDestination, getAllStates } from "../services/adminServices.js";
 
 
 interface Destination {
@@ -42,12 +42,21 @@ export const getAllDestinations = async(_request : Request, _response: Response,
   }
 }
 
+export const getStates = async (_request: Request, response: Response, next: NextFunction): Promise<void> => {
+  try {
+    response.status(200).json({ status: true, data: await getAllStates() });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const addDestination = async (_request: Request, _response: Response): Promise<void> => {
   const destination : Destination = _request.body;
   try {
     const destination_added = await addDest(destination);
     if (!destination_added) {
-      _response.status(400).json({ message: "Destination not created!" })
+      _response.status(400).json({ message: "Destination not created!" });
+      return;
     }
     _response.status(201).json({ message: "Destination Created!" })
   }

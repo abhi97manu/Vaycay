@@ -10,6 +10,8 @@ export type TravelPackage = {
   duration: string;
   location: string;
   description: string;
+  tripId?: number;
+  published?: boolean;
 };
 
 export type CartItem = {

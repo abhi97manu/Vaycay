@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { adminDashboard, addTrip ,addDestination, getAllDestinations } from "../controllers/AdminController.js";
+import { adminDashboard, addTrip ,addDestination, getAllDestinations, getStates } from "../controllers/AdminController.js";
+import { createTripPackage } from "../controllers/catalogController.js";
 import { authHandler } from "../middleware/authHandler.js";
 
 export const adminRoutes = Router();
@@ -7,6 +8,8 @@ export const adminRoutes = Router();
 adminRoutes.get("/dashboard", authHandler, adminDashboard);
 adminRoutes.post("/destinations", authHandler, addDestination);
 adminRoutes.get("/destinations", authHandler, getAllDestinations);
+adminRoutes.get("/states", authHandler, getStates);
 adminRoutes.post("/trip", authHandler, addTrip);
+adminRoutes.post("/catalog", authHandler, createTripPackage);
 //adminRoutes.get("/dashboard", adminDashboard);
 

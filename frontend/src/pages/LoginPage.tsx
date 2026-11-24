@@ -82,7 +82,7 @@ const LoginPage = () => {
         </p>
       </div>
 
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={HandleSubmit}>
         {/* Input Fields: Styled for the white theme */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -134,7 +134,6 @@ const LoginPage = () => {
         <button
           type="submit"
           className="w-full rounded-xl bg-orange-600 text-white font-semibold py-4 hover:bg-orange-700 transition duration-300 shadow-md"
-          onClick = {((e)=>HandleSubmit(e))}
         >
           Login
         </button>

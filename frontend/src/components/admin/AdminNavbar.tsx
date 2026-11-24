@@ -1,6 +1,7 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export const AdminNavbar = () => {
+ const navigate = useNavigate();
  return (
   <nav className="sticky top-0 z-50 w-full min-h-20 rounded-2xl border border-slate-200 bg-white px-6 shadow-sm">
     <div className="flex min-h-20 items-center justify-between">

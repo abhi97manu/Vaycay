@@ -7,8 +7,9 @@ const server_versionRoute = env.server_versionRoute;
 
 
  interface Destination {
+    id: number,
     name : string,
-    REGION :   string,
+    region :   string,
     state_id : number,
     description : string,
 
@@ -60,4 +61,21 @@ export async function getDestination(id? : number) : Promise<apiResult<Destinati
         console.log("Error", err)
         return {status : false, message : "Server Error" }
     }
+}
+
+export async function getAdminStates(): Promise<apiResult<{ id: number; name: string }[]>> {
+    try {
+        const result = await axios.get<apiResult<{ id: number; name: string }[]>>(`${SERVER_URL}${server_versionRoute}/admin/states`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('user_token')}` }
+        });
+        return result.data;
+    } catch {
+        return { status: false, message: "Could not load states" };
+    }
+}
+
+export async function createDestination(destination: { name: string; region: string; state_id: number; description: string }) {
+    return axios.post(`${SERVER_URL}${server_versionRoute}/admin/destinations`, destination, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('user_token')}` }
+    });
 }

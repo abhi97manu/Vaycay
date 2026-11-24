@@ -1,16 +1,13 @@
 import {pool} from "../config/db.js";
+import { RowDataPacket } from "mysql2/promise";
 
-interface User {
+interface User extends RowDataPacket {
     username: string;
     password: string;
 }
 
-if(!pool){
-    throw new Error("Database connection pool is not initialized.");
-}
-
 export async function getUsername(username: string): Promise<User | null> {
-  
+    if (!pool) return null;
     try{
            const [result] = await pool.query<User[]>(
     "SELECT username, password FROM users WHERE username = ?",
